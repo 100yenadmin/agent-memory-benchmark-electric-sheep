@@ -8,7 +8,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
@@ -301,6 +301,23 @@ def catalog():
     if static.exists():
         return JSONResponse(_json.loads(static.read_text(encoding="utf-8")))
     return JSONResponse(_generate_catalog())
+
+
+@app.get("/sitemap.xml")
+def sitemap():
+    static = _root / "catalog.json"
+    cat = _json.loads(static.read_text(encoding="utf-8")) if static.exists() else _generate_catalog()
+    base = "https://agentmemorybenchmark.ai"
+    urls = [base + "/"]
+    for ds, info in cat.get("datasets", {}).items():
+        urls.append(f"{base}/dataset/{ds}")
+        for split in info.get("splits", []):
+            urls.append(f"{base}/dataset/{ds}/{split}")
+    items = "\n".join(
+        f"  <url><loc>{u}</loc></url>" for u in urls
+    )
+    xml = f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{items}\n</urlset>'
+    return Response(content=xml, media_type="application/xml")
 
 
 @app.get("/api/results")
