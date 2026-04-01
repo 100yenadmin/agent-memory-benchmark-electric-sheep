@@ -418,6 +418,22 @@ def split_category_breakdown(dataset: str, split: str):
     return JSONResponse(out)
 
 
+@app.get("/api/debug-blob")
+def debug_blob():
+    manifest = _load_blob_manifest()
+    return JSONResponse({
+        "manifest_entries": len(manifest),
+        "sample_keys": list(manifest.keys())[:5],
+        "root": str(_root),
+        "manifest_files_checked": [
+            str(_root / name) for name in ("blob-manifest.json", ".blob_manifest.json")
+        ],
+        "manifest_files_exist": [
+            (_root / name).exists() for name in ("blob-manifest.json", ".blob_manifest.json")
+        ],
+    })
+
+
 @app.get("/api/run-url")
 def run_url(file: str):
     """Return the direct Blob CDN URL for an output file, if available.
