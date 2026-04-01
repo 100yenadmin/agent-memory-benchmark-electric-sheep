@@ -18,6 +18,7 @@ const runPath = computed(() => {
 })
 
 const data        = ref(null)
+const catalog     = ref({ datasets: {} })
 const loading     = ref(true)
 const error       = ref(null)
 const filter      = ref('all')
@@ -34,7 +35,10 @@ async function load() {
   finally { loading.value = false }
 }
 
-onMounted(load)
+onMounted(() => {
+  load()
+  fetch('/api/catalog').then(r => r.json()).then(d => catalog.value = d).catch(() => {})
+})
 watch(runPath, load)
 
 const results = computed(() => data.value?.results ?? [])
@@ -341,6 +345,10 @@ function toggleCat(axis, cat) {
               <span class="font-semibold">{{ active.score != null ? 'Score: ' + active.score.toFixed(3) : (active.correct ? '✓ Correct' : '✗ Incorrect') }}</span>
               <span v-if="active.judge_reason" class="ml-2 opacity-75 font-normal">— {{ active.judge_reason }}</span>
             </div>
+            <details v-if="catalog.datasets?.[data?.dataset]?.scoring_note" class="mt-2 text-xs text-muted-foreground">
+              <summary class="cursor-pointer hover:text-foreground/80 transition-colors">How is this scored?</summary>
+              <p class="mt-1.5 leading-relaxed pl-3 border-l-2 border-muted">{{ catalog.datasets[data.dataset].scoring_note }}</p>
+            </details>
           </section>
 
           <hr class="border-border/40" />

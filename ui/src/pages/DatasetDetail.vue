@@ -483,6 +483,12 @@ function hasCategoryData(local, split) {
             </template>
           </template>
 
+          <!-- Scoring note -->
+          <div v-if="catalog.datasets?.[dataset]?.scoring_note" class="mt-6 mb-2 rounded-md bg-muted/50 px-4 py-3 max-w-3xl">
+            <p class="text-xs font-medium text-foreground/80 mb-1">How is this scored?</p>
+            <p class="text-xs text-muted-foreground leading-relaxed">{{ catalog.datasets[dataset].scoring_note }}</p>
+          </div>
+
           <!-- Unverified -->
           <template v-if="external.length">
             <div class="mb-3 mt-8">

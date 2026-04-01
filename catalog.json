@@ -2,6 +2,7 @@
   "datasets": {
     "beam": {
       "description": "Long-context memory benchmark: 100 conversations (100K\u201310M tokens), 2 000 questions across 10 memory ability categories.",
+      "scoring_note": "Scoring follows the formula defined in the BEAM paper. Each question has a rubric with multiple items, and an LLM judge scores each item on a 0/0.5/1 scale; the question score is the average across its rubric items. For event ordering questions, Kendall tau-b rank correlation measures how well the predicted order matches the reference. The overall benchmark score is the mean of all individual question scores. Because partial credit is common (scoring 0.5 is straightforward) while achieving a perfect 1.0 requires nailing every rubric item, BEAM scores sit on a different scale than pass/fail benchmarks.",
       "task": "LLM-judged",
       "splits": [
         "100k",
@@ -12,6 +13,7 @@
     },
     "lifebench": {
       "description": "Long-horizon multi-source personalized memory benchmark across 10 users.",
+      "scoring_note": "An LLM judge compares each answer against a gold-standard reference and grades it pass or fail. The overall score is the pass rate across all questions.",
       "task": "LLM-judged",
       "splits": [
         "en"
@@ -19,6 +21,7 @@
     },
     "locomo": {
       "description": "Multi-session long-term conversations with 1,986 QA pairs.",
+      "scoring_note": "An LLM judge compares each answer against a gold-standard reference and grades it pass or fail. The overall score is the pass rate across all questions.",
       "task": "LLM-judged",
       "splits": [
         "locomo10"
@@ -26,6 +29,7 @@
     },
     "longmemeval": {
       "description": "Long-term memory evaluation in LLM-based chat assistants.",
+      "scoring_note": "An LLM judge compares each answer against a gold-standard reference and grades it pass or fail, with special handling for time and date questions. The overall score is the pass rate across all questions.",
       "task": "LLM-judged",
       "splits": [
         "s"
@@ -33,6 +37,7 @@
     },
     "membench": {
       "description": "Agent memory at different abstraction levels and perspectives.",
+      "scoring_note": "Multiple-choice questions with a single correct answer. The model must select the right option; the score is the fraction of questions answered correctly.",
       "task": "MCQ",
       "splits": [
         "FirstAgentLowLevel",
@@ -43,6 +48,7 @@
     },
     "memsim": {
       "description": "Chinese daily-life memory simulation with diverse QA types.",
+      "scoring_note": "Multiple-choice questions with a single correct answer. The model must select the right option; the score is the fraction of questions answered correctly.",
       "task": "MCQ",
       "splits": [
         "simple",
@@ -55,6 +61,7 @@
     },
     "personamem": {
       "description": "Long-horizon personal preference tracking across conversation sessions.",
+      "scoring_note": "Multiple-choice questions with a single correct answer. The model must select the right option; the score is the fraction of questions answered correctly.",
       "task": "MCQ",
       "splits": [
         "32k",
