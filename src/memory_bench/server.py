@@ -44,11 +44,6 @@ def _blob_url(relative_path: str) -> str:
     entry = manifest.get(relative_path)
     if isinstance(entry, dict) and entry.get("url"):
         return entry["url"]
-    import logging
-    logging.getLogger(__name__).warning(
-        f"_blob_url: no manifest entry for {relative_path!r} "
-        f"(manifest has {len(manifest)} entries, sample keys: {list(manifest.keys())[:3]})"
-    )
     return f"{_BLOB_BASE}/{relative_path}"
 
 
@@ -416,22 +411,6 @@ def split_category_breakdown(dataset: str, split: str):
         })
 
     return JSONResponse(out)
-
-
-@app.get("/api/debug-blob")
-def debug_blob():
-    manifest = _load_blob_manifest()
-    return JSONResponse({
-        "manifest_entries": len(manifest),
-        "sample_keys": list(manifest.keys())[:5],
-        "root": str(_root),
-        "manifest_files_checked": [
-            str(_root / name) for name in ("blob-manifest.json", ".blob_manifest.json")
-        ],
-        "manifest_files_exist": [
-            (_root / name).exists() for name in ("blob-manifest.json", ".blob_manifest.json")
-        ],
-    })
 
 
 @app.get("/api/run-url")
