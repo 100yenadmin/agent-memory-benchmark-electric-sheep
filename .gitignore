@@ -1,13 +1,33 @@
-.venv/
+# === Secrets & credentials ===
+.env
+.env.*
+*.env
+bench-env.sh
+secrets/
+
+# === Adapter symlinks (canonical source is in electric-sheep, private) ===
+src/memory_bench/memory/cortex.py
+src/memory_bench/memory/cortex.py.bak
+
+# === Benchmark outputs & databases ===
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+outputs/
+results/
+*.json
+!pyproject.toml
+!package.json
+
+# === Python ===
 __pycache__/
 *.pyc
-outputs/
-!outputs/**/*.json.gz
-outputs/**/_store/
-outputs/**/*.json.bak
-data/*.json
-data/tempo/
-.datasets/
-.data/
-.vercel
-.env*.local
+.venv/
+*.egg-info/
+dist/
+build/
+
+# === OS ===
+.DS_Store
+Thumbs.db
